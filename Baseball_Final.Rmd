@@ -1,0 +1,99 @@
+---
+title: "Baseball_Another"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r libs, include=FALSE}
+Sys.setlocale('LC_ALL', 'korean')
+#그게 안되면 Sys.setlocale("LC_COLLATE", "ko_KR.UTF-8") 이거
+
+```
+
+##야구 구종 데이터 분석
+```{r Data Setting}
+Baseball<- read.csv("C:/Users/ChanWoo/Documents/R/PitchSample2.csv")
+X<- Baseball
+str(X)
+
+X$pitch_type<-as.factor(X$pitch_type)
+X<-cbind(X[1],as.data.frame(scale(X[2:21])))
+
+set.seed(123)
+indexes = sample(1:nrow(X),size = 0.7*nrow(X))
+
+train =X[indexes,]
+test  =X[-indexes,]
+
+train_labels <-train[,1]
+test_labels  <-test[,1]
+
+table(test_labels)
+table(train_labels)
+```
+
+
+##의사결정나무
+
+```{r}
+library(rpart)
+m <- rpart(pitch_type~.,data=train)
+m
+
+testm <-predict(m,newdata = test, type = "class")
+table(test_labels,testm)
+```
+```{r}
+#http://rstudio-pubs-static.s3.amazonaws.com/14533_d00b7f7d85394a1a9b18ae3dc10a2e20.html
+plot(m,compress = TRUE, margin = 0.2)
+text(m,cex=1.5)
+```
+
+```{r}
+library(rpart.plot)
+
+prp(m, type = 0, extra = 2)
+prp(m, type = 4, extra = 2)
+
+rpartm <- predict(m, newdata = test, type="class")
+table(test_labels,testm)
+```
+
+##랜덤 포레스트
+```{r}
+library(randomForest)
+m <-randomForest(pitch_type~., data=train)
+m
+```
+
+##다항 회귀 분석 
+```{r}
+library(nnet)
+m <- multinom(pitch_type~., data = train)
+m
+```
+```{r}
+testm <- predict(m,newdata = test, type = "class")
+table(test_labels,testm)
+```
+
+##나이브 베이즈
+```{r}
+library(e1071)
+
+m<- naiveBayes(train,train_labels,laplace = 1)
+#laplace = 1은 디폴트값임
+testm <-predict(m,test)
+table(test_labels,testm)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
