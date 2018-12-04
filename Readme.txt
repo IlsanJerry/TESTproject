@@ -8,12 +8,12 @@
  3.Github.com에서 레포짓(온라인 저장소만들기)
    ★로컬 프로젝트명과 온라인 프로젝트 이름이 동일해야함.
 
- 4.깃허브(온라인저장소)와 로컬(내컴퓨터내의 프로젝트)를
-  연결해야함 
- 4-1.git config --global user.name"깃허브 계정 이름"
- 4-2.git config --global user.email"깃허브 계정 이메일"
- 4-3.git remote add origin https://github.com/IlsanJerry/TESTproject.git
- 4-4.git remote -v (연결이 됬는지 확인)
+ 4.깃허브(온라인저장소)와 로컬(내컴퓨터내의 프로젝트)를 연결해야함 
+ 
+  4-1.git config --global user.name"깃허브 계정 이름"
+  4-2.git config --global user.email"깃허브 계정 이메일"
+  4-3.git remote add origin https://github.com/IlsanJerry/TESTproject.git
+  4-4.git remote -v (연결이 완료했는지 확인)
 
  5. 계정 연결은 끝남 .
  6.git init (초기화..?)
